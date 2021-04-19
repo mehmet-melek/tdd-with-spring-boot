@@ -48,7 +48,7 @@ public class BooksControllerTests {
         when(bookService.getBookWithId(anyLong())).thenReturn(BookUtil.getSampleBook());
         //Act
         //Assert
-        mockMvc.perform(MockMvcRequestBuilders.get("/books/{id}",1))
+        mockMvc.perform(MockMvcRequestBuilders.get("/books/{bookId}",1L))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("id").value(1L))
                 .andExpect(jsonPath("name").value("Clean Code"));
@@ -61,7 +61,7 @@ public class BooksControllerTests {
         when(bookService.getBookWithId(anyLong())).thenThrow(new BookNotFoundException());
         //Act
         //Assert
-        mockMvc.perform(MockMvcRequestBuilders.get("/books/{id}",1))
+        mockMvc.perform(MockMvcRequestBuilders.get("/books/{bookId}",1))
                 .andExpect(status().isNotFound())
                 .andExpect(result -> result.getResponse().toString().contains("Book not found!"));
                // .andExpect(status().reason(containsString("Book not found!")))

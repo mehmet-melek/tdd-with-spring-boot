@@ -1,8 +1,11 @@
 package org.melek.tddwithspringframework.integration;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.melek.tddwithspringframework.model.Book;
+import org.melek.tddwithspringframework.repository.BookRepository;
+import org.melek.tddwithspringframework.util.BookUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -19,6 +22,14 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 public class BooksIT {
+
+    @Autowired
+    private BookRepository bookRepository;
+
+    @Before
+    public void setup() {
+        bookRepository.saveAll(BookUtil.getSampleBookList());
+    }
 
     @Autowired
     TestRestTemplate testRestTemplate;
@@ -56,7 +67,7 @@ public class BooksIT {
     public void getBookWithNonExistId() {
         //Arrange
         //Act
-        ResponseEntity<String> responseEntity = testRestTemplate.getForEntity("/books/1", String.class);
+        ResponseEntity<String> responseEntity = testRestTemplate.getForEntity("/books/8", String.class);
 
         //Assert
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);

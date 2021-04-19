@@ -26,9 +26,9 @@ public class BooksController {
         return ResponseEntity.ok(bookList);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Book> getBookWithId (@PathVariable Long id) {
-        return ResponseEntity.ok(bookService.getBookWithId(id));
+    @GetMapping("/{bookId}")
+    public ResponseEntity<Book> getBookWithId (@PathVariable Long bookId) {
+        return ResponseEntity.ok(bookService.getBookWithId(bookId));
     }
 
     @ExceptionHandler
