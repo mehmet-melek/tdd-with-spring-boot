@@ -15,7 +15,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -38,6 +38,8 @@ public class BooksControllerTests {
         mockMvc.perform(MockMvcRequestBuilders.get("/books"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(3));
+        verify(bookService,times(1)).getAllBooks();
+
     }
 
     @Test
@@ -50,6 +52,7 @@ public class BooksControllerTests {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("id").value(1L))
                 .andExpect(jsonPath("name").value("Clean Code"));
+        verify(bookService,times(1)).getBookWithId(1L);
     }
 
     @Test
@@ -63,6 +66,8 @@ public class BooksControllerTests {
                 .andExpect(result -> result.getResponse().toString().contains("Book not found!"));
                // .andExpect(status().reason(containsString("Book not found!")))
                // .andExpect( status().reason( "Book not found!" ));
+        verify(bookService,times(1)).getBookWithId(1L);
+
     }
 
 }

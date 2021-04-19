@@ -3,9 +3,11 @@ package org.melek.tddwithspringframework.util;
 import org.melek.tddwithspringframework.model.Book;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 public class BookUtil {
 
+    private static Object Optional;
     private Book book;
 
     public static List<Book> getSampleBookList() {
