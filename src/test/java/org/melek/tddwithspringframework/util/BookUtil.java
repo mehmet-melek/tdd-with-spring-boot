@@ -11,24 +11,36 @@ public class BookUtil {
     public static List<Book> getSampleBookList() {
 
         Book book1 = Book.builder()
-                .name("Dava")
-                .author("Kafka")
+                .name("Clean Code")
+                .author("Robert Cecil")
                 .price(10.0)
                 .stock(10).build();
         Book book2 = Book.builder()
-                .name("Mecburiyet")
-                .author("Zwaig")
+                .name("Refactoring")
+                .author("Kent Beck")
                 .price(11.1)
                 .stock(15).build();
         Book book3 = Book.builder()
-                .name("Santraç")
-                .author("Zwaig")
+                .name("Continuous Delivery")
+                .author("David Farley")
                 .price(15.5)
                 .stock(10).build();
 
         List<Book> bookList = Arrays.asList(book1, book2, book3);
 
         return bookList;
+    }
+
+    public static Book getSampleBook() {
+
+        Book book = Book.builder()
+                .id(1L)
+                .name("Clean Code")
+                .author("Robert Cecil")
+                .price(10.0)
+                .stock(10).build();
+
+        return book;
     }
 
 }

@@ -11,4 +11,8 @@ public class BookService {
     public List<Book> getAllBooks() {
         return null;
     }
+
+    public Book getBookWithId(Long id) {
+        return null;
+    }
 }

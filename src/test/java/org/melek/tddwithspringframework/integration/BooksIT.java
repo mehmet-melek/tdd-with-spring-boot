@@ -56,7 +56,7 @@ public class BooksIT {
     public void getBookWithNonExistId() {
         //Arrange
         //Act
-        ResponseEntity<String> responseEntity = testRestTemplate.getForEntity("/books/0", String.class);
+        ResponseEntity<String> responseEntity = testRestTemplate.getForEntity("/books/1", String.class);
 
         //Assert
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
