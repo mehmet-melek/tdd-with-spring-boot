@@ -1,6 +1,5 @@
 package org.melek.tddwithspringframework.controller;
 
-
 import org.melek.tddwithspringframework.exception.BookNotFoundException;
 import org.melek.tddwithspringframework.model.Book;
 import org.melek.tddwithspringframework.service.BookService;
@@ -21,14 +20,19 @@ public class BooksController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<Book>> getAllBooks () {
+    public ResponseEntity<List<Book>> getAllBooks() {
         List<Book> bookList = bookService.getAllBooks();
         return ResponseEntity.ok(bookList);
     }
 
     @GetMapping("/{bookId}")
-    public ResponseEntity<Book> getBookWithId (@PathVariable Long bookId) {
+    public ResponseEntity<Book> getBookWithId(@PathVariable Long bookId) {
         return ResponseEntity.ok(bookService.getBookWithId(bookId));
+    }
+
+    @PostMapping
+    public ResponseEntity<Book> saveGivenBook(@RequestBody Book book) {
+        return new ResponseEntity<>(bookService.addBook(book), HttpStatus.CREATED);
     }
 
     @ExceptionHandler
@@ -36,9 +40,6 @@ public class BooksController {
     public String bookNotFoundException(BookNotFoundException bookNotFoundException) {
         return "Book not found!";
     }
-
-
-
 
 
 }

@@ -1,17 +1,13 @@
 package org.melek.tddwithspringframework.util;
 
 import org.melek.tddwithspringframework.model.Book;
+
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 public class BookUtil {
 
-    private static Object Optional;
-    private Book book;
-
     public static List<Book> getSampleBookList() {
-
         Book book1 = Book.builder()
                 .name("Clean Code")
                 .author("Robert Cecil")
@@ -27,22 +23,16 @@ public class BookUtil {
                 .author("David Farley")
                 .price(15.5)
                 .stock(10).build();
-
-        List<Book> bookList = Arrays.asList(book1, book2, book3);
-
-        return bookList;
+        return Arrays.asList(book1, book2, book3);
     }
 
     public static Book getSampleBook() {
-
-        Book book = Book.builder()
+        return Book.builder()
                 .id(1L)
                 .name("Clean Code")
                 .author("Robert Cecil")
                 .price(10.0)
                 .stock(10).build();
-
-        return book;
     }
 
 }

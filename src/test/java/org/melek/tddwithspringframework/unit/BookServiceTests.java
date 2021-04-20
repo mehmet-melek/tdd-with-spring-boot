@@ -1,9 +1,7 @@
 package org.melek.tddwithspringframework.unit;
 
-
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.melek.tddwithspringframework.exception.BookNotFoundException;
 import org.melek.tddwithspringframework.model.Book;
@@ -14,7 +12,6 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -34,30 +31,30 @@ public class BookServiceTests {
     }
 
     @Test
-    public void getAllBooks () {
+    public void getAllBooks() {
         //Arrange
         when(bookRepository.findAll()).thenReturn(BookUtil.getSampleBookList());
         //Act
         List<Book> bookList = bookService.getAllBooks();
         //Assert
         assertThat(bookList.size()).isGreaterThan(1);
-        verify(bookRepository,times(1)).findAll();
+        verify(bookRepository, times(1)).findAll();
 
     }
 
     @Test
-    public void getBookWithId () {
+    public void getBookWithId() {
         //Arrange
         when(bookRepository.findById(any())).thenReturn(java.util.Optional.ofNullable(BookUtil.getSampleBook()));
         //Act
         Book book = bookService.getBookWithId(1L);
         //Assert
         assertThat(book.getId()).isEqualTo(1L);
-        verify(bookRepository,times(1)).findById(any());
+        verify(bookRepository, times(1)).findById(any());
     }
 
     @Test(expected = BookNotFoundException.class)
-    public void getBookWithNonExistId () {
+    public void getBookWithNonExistId() {
         //Arrange
         //Act
         // Assert
