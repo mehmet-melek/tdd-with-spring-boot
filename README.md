@@ -24,6 +24,6 @@ An example of test driven development with the spring framework.
 >Then it should return "Book not found" error message  
 >And status code should be _404_  
 
->When I want to add a book to _books_.
->Then should return given book
+>When I want to add a book to _books_.  
+>Then should return given book  
 >And status code should be _201_  
