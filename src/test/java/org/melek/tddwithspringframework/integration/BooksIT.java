@@ -25,6 +25,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS) //used for non-static before method
 @Transactional
+//@ActiveProfiles("test")
 public class BooksIT {
 
     @Autowired
@@ -43,8 +44,8 @@ public class BooksIT {
     class first {
 
         @Test
-        @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = {"classpath:files/data.sql"})
-        public void whenGetBooks_shouldReturnAllBooks() {
+        @Sql(scripts = "classpath:/file/data.sql")
+        void whenGetBooks_shouldReturnAllBooks() {
             //Arrange
             //Act
             ResponseEntity<List<Book>> responseEntity = testRestTemplate.exchange(
