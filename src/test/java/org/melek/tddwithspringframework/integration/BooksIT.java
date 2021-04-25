@@ -19,20 +19,21 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.DEFINED_PORT;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 @ExtendWith(SpringExtension.class)
-@SpringBootTest(webEnvironment = RANDOM_PORT)
+@SpringBootTest(webEnvironment = DEFINED_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS) //used for non-static before method
 @Transactional
 //@ActiveProfiles("test")
-public class BooksIT {
+class BooksIT {
 
     @Autowired
     private BookRepository bookRepository;
 
     @BeforeAll
-    public void setup() {
+    void setup() {
         bookRepository.saveAll(BookUtil.getSampleBookList());
     }
 
@@ -44,7 +45,7 @@ public class BooksIT {
     class first {
 
         @Test
-        @Sql(scripts = "classpath:/file/data.sql")
+        @Sql(scripts = "classpath:/data.sql")
         void whenGetBooks_shouldReturnAllBooks() {
             //Arrange
             //Act
@@ -63,7 +64,7 @@ public class BooksIT {
 
 
         @Test
-        public void whenGetBookWithId_shouldReturnGivenBook() {
+        void whenGetBookWithId_shouldReturnGivenBook() throws InterruptedException {
             //Arrange
             //Act
             ResponseEntity<Book> responseEntity = testRestTemplate.getForEntity("/books/1", Book.class);
@@ -79,7 +80,7 @@ public class BooksIT {
     @DisplayName("Second Group")
     class second {
         @Test
-        public void whenGetBookWithNonExistId_shouldReturnNotFoundMessage() {
+        void whenGetBookWithNonExistId_shouldReturnNotFoundMessage() {
             //Arrange
             //Act
             ResponseEntity<String> responseEntity = testRestTemplate.getForEntity("/books/0", String.class);
@@ -90,7 +91,7 @@ public class BooksIT {
         }
 
         @Test
-        public void whenSaveBook_shouldReturnSavedBook() {
+        void whenSaveBook_shouldReturnSavedBook() {
             //Arrange
             //Act
             ResponseEntity<Book> responseEntity = testRestTemplate.postForEntity("/books", BookUtil.getSampleBook(), Book.class);
