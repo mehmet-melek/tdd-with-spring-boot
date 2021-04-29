@@ -11,22 +11,19 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
-import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.DEFINED_PORT;
-import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = DEFINED_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS) //used for non-static before method
-@Transactional
-//@ActiveProfiles("test")
+@ActiveProfiles("test")
 class BooksIT {
 
     @Autowired
@@ -45,7 +42,6 @@ class BooksIT {
     class first {
 
         @Test
-        @Sql(scripts = "classpath:/data.sql")
         void whenGetBooks_shouldReturnAllBooks() {
             //Arrange
             //Act
@@ -56,6 +52,7 @@ class BooksIT {
                     new ParameterizedTypeReference<List<Book>>() {
                     });
             List<Book> books = responseEntity.getBody();
+
 
             //Assert
             assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
