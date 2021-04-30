@@ -1,6 +1,5 @@
 package org.melek.tddwithspringframework.integration;
 
-
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.melek.tddwithspringframework.model.Book;
@@ -38,8 +37,8 @@ class BooksIT {
     TestRestTemplate testRestTemplate;
 
     @Nested
-    @DisplayName("First Group")
-    class first {
+    @DisplayName("Get operations")
+    class get {
 
         @Test
         void whenGetBooks_shouldReturnAllBooks() {
@@ -70,12 +69,6 @@ class BooksIT {
             assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
             assertThat(responseEntity.getBody().getId()).isEqualTo(1);
         }
-
-    }
-
-    @Nested
-    @DisplayName("Second Group")
-    class second {
         @Test
         void whenGetBookWithNonExistId_shouldReturnNotFoundMessage() {
             //Arrange
@@ -86,6 +79,11 @@ class BooksIT {
             assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
             assertTrue(responseEntity.getBody().contains("Book not found!"));
         }
+    }
+
+    @Nested
+    @DisplayName("Post operations")
+    class post {
 
         @Test
         void whenSaveBook_shouldReturnSavedBook() {
