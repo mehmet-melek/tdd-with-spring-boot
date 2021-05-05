@@ -22,7 +22,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = DEFINED_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS) //used for non-static before method
-@ActiveProfiles("test")
+//@ActiveProfiles("test")
 class BooksIT {
 
     @Autowired
@@ -51,7 +51,6 @@ class BooksIT {
                     new ParameterizedTypeReference<List<Book>>() {
                     });
             List<Book> books = responseEntity.getBody();
-
 
             //Assert
             assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -84,7 +83,6 @@ class BooksIT {
     @Nested
     @DisplayName("Post operations")
     class post {
-
         @Test
         void whenSaveBook_shouldReturnSavedBook() {
             //Arrange
@@ -94,9 +92,6 @@ class BooksIT {
             assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
             assertThat(responseEntity.getBody().getId()).isEqualTo(1);
             assertThat(responseEntity.getBody().getName()).isEqualTo(BookUtil.getSampleBook().getName());
-
         }
     }
-
-
 }
