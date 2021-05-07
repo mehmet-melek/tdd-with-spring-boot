@@ -10,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
@@ -21,23 +21,28 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = DEFINED_PORT)
-@TestInstance(TestInstance.Lifecycle.PER_CLASS) //used for non-static before method
-//@ActiveProfiles("test")
+//@TestInstance(TestInstance.Lifecycle.PER_CLASS) //used for non-static before method
+//@ActiveProfiles("test") required application-test.properties file
+//@Sql("/data.sql") data.sql and schema.sql automatically execute before tests
 class BooksIT {
 
     @Autowired
     private BookRepository bookRepository;
 
+/*
     @BeforeAll
     void setup() {
         bookRepository.saveAll(BookUtil.getSampleBookList());
     }
+*/
+
 
     @Autowired
     TestRestTemplate testRestTemplate;
 
     @Nested
     @DisplayName("Get operations")
+    @Sql("/sql-files/temp.sql")
     class get {
 
         @Test
@@ -51,10 +56,9 @@ class BooksIT {
                     new ParameterizedTypeReference<List<Book>>() {
                     });
             List<Book> books = responseEntity.getBody();
-
             //Assert
             assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-            assertThat(books.size()).isEqualTo(5);
+            assertThat(books.size()).isEqualTo(3);
         }
 
 
@@ -63,17 +67,16 @@ class BooksIT {
             //Arrange
             //Act
             ResponseEntity<Book> responseEntity = testRestTemplate.getForEntity("/books/1", Book.class);
-
             //Assert
             assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
             assertThat(responseEntity.getBody().getId()).isEqualTo(1);
         }
+
         @Test
         void whenGetBookWithNonExistId_shouldReturnNotFoundMessage() {
             //Arrange
             //Act
             ResponseEntity<String> responseEntity = testRestTemplate.getForEntity("/books/0", String.class);
-
             //Assert
             assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
             assertTrue(responseEntity.getBody().contains("Book not found!"));

@@ -2,6 +2,7 @@ package org.melek.tddwithspringframework.util;
 
 import org.melek.tddwithspringframework.model.Book;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class BookUtil {
                 .author("David Farley")
                 .price(15.5)
                 .stock(10).build();
-        return Arrays.asList(book1, book2, book3);
+        return new ArrayList<>(Arrays.asList(book1, book2, book3));
     }
 
     public static Book getSampleBook() {
@@ -34,5 +35,4 @@ public class BookUtil {
                 .price(10.0)
                 .stock(10).build();
     }
-
 }
