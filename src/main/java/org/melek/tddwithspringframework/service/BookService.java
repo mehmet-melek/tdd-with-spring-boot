@@ -27,4 +27,20 @@ public class BookService {
     public Book addBook(Book book) {
         return bookRepository.save(book);
     }
+
+    public void sampleTestableMethod() {
+
+
+    }
+
+    //Todo: Delete or change with real method
+    public Boolean getResult(Integer value) {
+        System.out.println(calculate(value));
+        return calculate(value) > 20;
+    }
+
+    public int calculate(int value) {
+        value = value * 2;
+        return value;
+    }
 }

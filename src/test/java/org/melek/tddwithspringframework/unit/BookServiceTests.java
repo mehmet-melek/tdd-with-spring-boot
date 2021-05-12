@@ -9,6 +9,7 @@ import org.melek.tddwithspringframework.repository.BookRepository;
 import org.melek.tddwithspringframework.service.BookService;
 import org.melek.tddwithspringframework.util.BookUtil;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.List;
@@ -59,5 +60,16 @@ public class BookServiceTests {
         //Act
         // Assert
         bookService.getBookWithId(1L);
+    }
+
+
+    //Todo: change with a real function
+    @Test
+    public void sampleTest() {
+        BookService spyBookService = Mockito.spy(bookService);
+       // Mockito.doReturn(5).when(spyBookService).calculate(anyInt());
+        when(spyBookService.calculate(anyInt())).thenReturn(5);
+        Boolean actualResult = spyBookService.getResult(30);
+        assertThat(actualResult).isEqualTo(false);
     }
 }
