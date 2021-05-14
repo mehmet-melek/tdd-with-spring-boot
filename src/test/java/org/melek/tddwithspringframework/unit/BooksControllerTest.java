@@ -1,8 +1,8 @@
 package org.melek.tddwithspringframework.unit;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.melek.tddwithspringframework.controller.BooksController;
 import org.melek.tddwithspringframework.exception.BookNotFoundException;
 import org.melek.tddwithspringframework.service.BookService;
@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -21,9 +21,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @WebMvcTest(BooksController.class)
-public class BooksControllerTests {
+class BooksControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -32,7 +32,7 @@ public class BooksControllerTests {
     private BookService bookService;
 
     @Test
-    public void whenGet_books_shouldReturnAllBooks() throws Exception {
+    void whenGet_books_shouldReturnAllBooks() throws Exception {
         //Arrange
         when(bookService.getAllBooks()).thenReturn(BookUtil.getSampleBookList());
         //Act
@@ -45,7 +45,7 @@ public class BooksControllerTests {
     }
 
     @Test
-    public void whenGet_booksWithId_shouldReturnGivenBook() throws Exception {
+    void whenGet_booksWithId_shouldReturnGivenBook() throws Exception {
         //Arrange
         when(bookService.getBookWithId(anyLong())).thenReturn(BookUtil.getSampleBook());
         //Act
@@ -58,7 +58,7 @@ public class BooksControllerTests {
     }
 
     @Test
-    public void whenGet_BooksWithNonExistId_shouldReturnNotFoundMessage() throws Exception {
+    void whenGet_BooksWithNonExistId_shouldReturnNotFoundMessage() throws Exception {
         //Arrange
         when(bookService.getBookWithId(anyLong())).thenThrow(new BookNotFoundException());
         //Act
@@ -73,7 +73,7 @@ public class BooksControllerTests {
     }
 
     @Test
-    public void whenPostBookTo_books_shouldReturnSavedBookWithId() throws Exception {
+    void whenPostBookTo_books_shouldReturnSavedBookWithId() throws Exception {
         //Arrange
         ObjectMapper objectMapper = new ObjectMapper();
         String json = objectMapper.writeValueAsString(BookUtil.getSampleBook());
