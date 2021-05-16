@@ -3,6 +3,8 @@ package org.melek.tddwithspringframework.unit;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.melek.tddwithspringframework.exception.BookNotFoundException;
 import org.melek.tddwithspringframework.model.Book;
 import org.melek.tddwithspringframework.repository.BookRepository;
@@ -11,6 +13,7 @@ import org.melek.tddwithspringframework.util.BookUtil;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
@@ -63,14 +66,17 @@ public class BookServiceTest {
         });
     }
 
-
     //Todo: change with a real function
     @Test
-    void sampleTest() {
-        BookService spyBookService = Mockito.spy(bookService);
-       // Mockito.doReturn(5).when(spyBookService).calculate(anyInt());
-        when(spyBookService.calculate(anyInt())).thenReturn(5);
-        Boolean actualResult = spyBookService.getResult(30);
-        assertThat(actualResult).isEqualTo(false);
+    void sampleTestWithSpy() {
+         BookService spyBookService = Mockito.spy(bookService);
+         Mockito.doReturn(0).when(spyBookService).calculate(10);
+         Mockito.doCallRealMethod().when(spyBookService).calculate(11);
+
+        int actualResult = spyBookService.getResult(10);
+        assertThat(actualResult).isEqualTo(0);
+
+        int actualResultSecond = spyBookService.getResult(11);
+        assertThat(actualResultSecond).isEqualTo(11*2);
     }
 }

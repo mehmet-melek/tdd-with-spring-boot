@@ -34,13 +34,10 @@ public class BookService {
     }
 
     //Todo: Delete or change with real method
-    public Boolean getResult(Integer value) {
-        System.out.println(calculate(value));
-        return calculate(value) > 20;
+    public int getResult(Integer value) {
+        return calculate(value);
     }
-
     public int calculate(int value) {
-        value = value * 2;
-        return value;
+        return value * 2;
     }
 }
