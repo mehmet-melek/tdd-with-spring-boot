@@ -28,11 +28,6 @@ public class BookService {
         return bookRepository.save(book);
     }
 
-    public void sampleTestableMethod() {
-
-
-    }
-
     //Todo: Delete or change with real method
     public int getResult(Integer value) {
         return calculate(value);
