@@ -1,16 +1,14 @@
 package org.melek.tddwithspringframework.unit;
 
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.melek.tddwithspringframework.exception.BookNotFoundException;
 import org.melek.tddwithspringframework.model.Book;
 import org.melek.tddwithspringframework.repository.BookRepository;
 import org.melek.tddwithspringframework.service.BookService;
 import org.melek.tddwithspringframework.util.BookUtil;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -25,15 +23,12 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 public class BookServiceTest {
 
+    @InjectMocks
     private BookService bookService;
 
     @Mock
     private BookRepository bookRepository;
 
-    @BeforeEach
-    void setup() {
-        bookService = new BookService(bookRepository);
-    }
 
     @Test
     void getAllBooks() {
