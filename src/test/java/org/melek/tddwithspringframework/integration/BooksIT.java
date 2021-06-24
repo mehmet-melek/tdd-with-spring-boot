@@ -56,6 +56,7 @@ class BooksIT {
                     new ParameterizedTypeReference<List<Book>>() {
                     });
             List<Book> books = responseEntity.getBody();
+            System.out.println(responseEntity.getBody());
             //Assert
             assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
             assertThat(books.size()).isEqualTo(3);
