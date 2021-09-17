@@ -5,11 +5,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.melek.tddwithspringframework.model.Book;
 import org.melek.tddwithspringframework.repository.BookRepository;
 import org.melek.tddwithspringframework.util.BookUtil;
+import org.melek.tddwithspringframework.util.MyTestProfileResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -22,7 +24,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = DEFINED_PORT)
 //@TestInstance(TestInstance.Lifecycle.PER_CLASS) //used for non-static before method
-//@ActiveProfiles("test") required application-test.properties file
+@ActiveProfiles(resolver = MyTestProfileResolver.class) //required application-test.properties file
 //@Sql("/data.sql") data.sql and schema.sql automatically execute before tests
 class BooksIT {
 
