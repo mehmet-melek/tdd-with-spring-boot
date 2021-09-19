@@ -14,9 +14,7 @@ import org.springframework.http.*;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
 import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.DEFINED_PORT;
@@ -26,7 +24,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 //@TestInstance(TestInstance.Lifecycle.PER_CLASS) //used for non-static before method
 @ActiveProfiles(resolver = MyTestProfileResolver.class) //required application-test.properties file
 //@Sql("/data.sql") data.sql and schema.sql automatically execute before tests
-class BooksIT {
+class BooksTest {
 
     @Autowired
     private BookRepository bookRepository;
@@ -37,8 +35,6 @@ class BooksIT {
         bookRepository.saveAll(BookUtil.getSampleBookList());
     }
 */
-
-
     @Autowired
     TestRestTemplate testRestTemplate;
 
