@@ -10,12 +10,8 @@ import static pl.pojo.tester.api.assertion.Assertions.assertPojoMethodsFor;
 public class PojoTest {
 
     @Test
-    void bookPojoTest(){
-
-        final Class<?> classUnderTest = Book.class;
-
-        assertPojoMethodsFor(classUnderTest).testing(Method.GETTER, Method.SETTER)
-                .testing(Method.CONSTRUCTOR)
+    public void bookPojoTest(){
+        assertPojoMethodsFor(Book.class).testing(Method.GETTER, Method.SETTER,Method.CONSTRUCTOR)
                 .areWellImplemented();
     }
 

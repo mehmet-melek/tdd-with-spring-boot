@@ -24,7 +24,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 //@TestInstance(TestInstance.Lifecycle.PER_CLASS) //used for non-static before method
 @ActiveProfiles(resolver = MyTestProfileResolver.class) //required application-test.properties file
 //@Sql("/data.sql") data.sql and schema.sql automatically execute before tests
-class BooksTest {
+class BooksIT {
 
     @Autowired
     private BookRepository bookRepository;
