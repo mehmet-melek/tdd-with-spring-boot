@@ -6,7 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.melek.tddwithspringframework.exception.BookNotFoundException;
 import org.melek.tddwithspringframework.model.Book;
 import org.melek.tddwithspringframework.repository.BookRepository;
-import org.melek.tddwithspringframework.service.BookService;
+import org.melek.tddwithspringframework.service.BookServiceImp;
 import org.melek.tddwithspringframework.util.BookUtil;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -21,10 +21,10 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class BookServiceTest {
+public class BookServiceImpTest {
 
     @InjectMocks
-    private BookService bookService;
+    private BookServiceImp bookServiceImp;
 
     @Mock
     private BookRepository bookRepository;
@@ -35,7 +35,7 @@ public class BookServiceTest {
         //Arrange
         when(bookRepository.findAll()).thenReturn(BookUtil.getSampleBookList());
         //Act
-        List<Book> bookList = bookService.getAllBooks();
+        List<Book> bookList = bookServiceImp.getAllBooks();
         //Assert
         assertThat(bookList.size()).isGreaterThan(1);
         verify(bookRepository, times(1)).findAll();
@@ -47,7 +47,7 @@ public class BookServiceTest {
         //Arrange
         when(bookRepository.findById(any())).thenReturn(java.util.Optional.ofNullable(BookUtil.getSampleBook()));
         //Act
-        Book book = bookService.getBookWithId(1L);
+        Book book = bookServiceImp.getBookWithId(1L);
         //Assert
         assertThat(book.getId()).isEqualTo(1L);
         verify(bookRepository, times(1)).findById(any());
@@ -59,20 +59,20 @@ public class BookServiceTest {
         //Act
         // Assert
         assertThrows(BookNotFoundException.class,() -> {
-            bookService.getBookWithId(1L);
+            bookServiceImp.getBookWithId(1L);
         });
     }
 
     //Todo: change with a real function
     @Test
     void sampleTestWithSpy() {
-         BookService spyBookService = Mockito.spy(bookService);
-         Mockito.doReturn(0).when(spyBookService).calculate(10);
+         BookServiceImp spyBookServiceImp = Mockito.spy(bookServiceImp);
+         Mockito.doReturn(0).when(spyBookServiceImp).calculate(10);
 
-        int actualResult = spyBookService.getResult(10);
+        int actualResult = spyBookServiceImp.getResult(10);
         assertThat(actualResult).isEqualTo(0);
 
-        int actualResultSecond = spyBookService.getResult(11);
+        int actualResultSecond = spyBookServiceImp.getResult(11);
         assertThat(actualResultSecond).isEqualTo(11*2);
     }
 }
