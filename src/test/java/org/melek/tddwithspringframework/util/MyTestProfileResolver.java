@@ -6,6 +6,7 @@ public class MyTestProfileResolver implements ActiveProfilesResolver {
 
     @Override
     public String[] resolve(Class<?> testClass) {
-        return new String[]{System.getProperty("env.code")};
+        String envCode = System.getProperty("env.code");
+        return new String[]{ envCode == null ? "DEV" : envCode};
     }
 }

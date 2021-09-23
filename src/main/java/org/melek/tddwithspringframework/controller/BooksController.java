@@ -20,19 +20,23 @@ public class BooksController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<Book>> getAllBooks() {
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public List<Book> getAllBooks() {
         List<Book> bookList = bookService.getAllBooks();
-        return ResponseEntity.ok(bookList);
+        return bookList;
     }
 
     @GetMapping("/{bookId}")
     public ResponseEntity<Book> getBookWithId(@PathVariable Long bookId) {
-        return ResponseEntity.ok(bookService.getBookWithId(bookId));
+        return new ResponseEntity<>(bookService.getBookWithId(bookId),HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<Book> saveGivenBook(@RequestBody Book book) {
-        return new ResponseEntity<>(bookService.addBook(book), HttpStatus.CREATED);
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public Book saveGivenBook(@RequestBody Book book) {
+        return bookService.addBook(book);
     }
 
     @ExceptionHandler
