@@ -18,13 +18,14 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.DEFINED_PORT;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 @ExtendWith(SpringExtension.class)
-@SpringBootTest(webEnvironment = DEFINED_PORT)
+@SpringBootTest(webEnvironment = RANDOM_PORT)
 //@TestInstance(TestInstance.Lifecycle.PER_CLASS) //used for non-static before method
 @ActiveProfiles(resolver = MyTestProfileResolver.class) //required application-test.properties file
-//@Sql("/data.sql") data.sql and schema.sql automatically execute before tests
-class BooksIT {
+//@Sql("/data.sql") //data.sql and schema.sql automatically execute before tests
+class BooksTestRestTemplateIT {
 
     @Autowired
     private BookRepository bookRepository;

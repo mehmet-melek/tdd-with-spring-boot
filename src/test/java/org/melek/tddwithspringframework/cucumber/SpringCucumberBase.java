@@ -4,10 +4,6 @@ import io.cucumber.spring.CucumberContextConfiguration;
 import io.restassured.RestAssured;
 import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
-import org.junit.BeforeClass;
-import org.melek.tddwithspringframework.repository.BookRepository;
-import org.melek.tddwithspringframework.util.BookUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.jdbc.Sql;
@@ -20,16 +16,7 @@ import static io.restassured.RestAssured.given;
 @Sql("/sql-files/temp.sql")
 public class SpringCucumberBase {
 
-    @Autowired
-    BookRepository bookRepository;
-
-
-    @BeforeClass
-    public void setup(){
-        bookRepository.save(BookUtil.getSampleBook());
-    }
-
-    private final static String BASE_URI = "http://localhost";
+     private final static String BASE_URI = "http://localhost";
 
     @LocalServerPort
     private int port;

@@ -39,7 +39,7 @@ class BooksControllerTest {
         //Assert
         mockMvc.perform(MockMvcRequestBuilders.get("/books"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()").value(3))
+                .andExpect(jsonPath("size()").value(3))
                 .andReturn();
 
         verify(bookService, times(1)).getAllBooks();
