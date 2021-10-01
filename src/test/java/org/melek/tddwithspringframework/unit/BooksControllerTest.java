@@ -5,11 +5,15 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.melek.tddwithspringframework.controller.BooksController;
 import org.melek.tddwithspringframework.exception.BookNotFoundException;
+import org.melek.tddwithspringframework.repository.BookRepository;
 import org.melek.tddwithspringframework.service.BookService;
+import org.melek.tddwithspringframework.service.BookServiceImp;
 import org.melek.tddwithspringframework.util.BookUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -31,10 +35,21 @@ class BooksControllerTest {
     @MockBean
     private BookService bookService;
 
+/*    @TestConfiguration
+    static class AdditionalConfig {
+        BookRepository bookRepository;
+        @Bean
+        public BookService productValidator() {
+            return new BookServiceImp(bookRepository) {
+            };
+        }
+    }   */
+
     @Test
     void whenGet_books_shouldReturnAllBooks() throws Exception {
         //Arrange
         when(bookService.getAllBooks()).thenReturn(BookUtil.getSampleBookList());
+
         //Act
         //Assert
         mockMvc.perform(MockMvcRequestBuilders.get("/books"))
