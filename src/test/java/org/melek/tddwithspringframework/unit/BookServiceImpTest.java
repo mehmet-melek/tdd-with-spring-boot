@@ -3,14 +3,13 @@ package org.melek.tddwithspringframework.unit;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.melek.tddwithspringframework.dto.BookMapper;
 import org.melek.tddwithspringframework.exception.BookNotFoundException;
 import org.melek.tddwithspringframework.model.Book;
 import org.melek.tddwithspringframework.repository.BookRepository;
 import org.melek.tddwithspringframework.service.BookServiceImp;
 import org.melek.tddwithspringframework.util.BookUtil;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
@@ -28,6 +27,9 @@ public class BookServiceImpTest {
 
     @Mock
     private BookRepository bookRepository;
+
+    @Mock
+    BookMapper bookMapper;
 
 
     @Test

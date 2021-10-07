@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
 import static io.restassured.RestAssured.when;
 import static org.hamcrest.Matchers.*;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
@@ -39,9 +40,9 @@ public class BooksRestAssuredIT {
         response = when().get("/books");
         response.then().assertThat()
                 .statusCode(equalTo(200))
-                .body("size()",is(2))
-                .body("name[0]",equalTo("Clean Code"))
-                .body("name[1]",equalTo("Continuous Delivery"));
+                .body("size()", is(2))
+                .body("name[0]", equalTo("Clean Code"))
+                .body("name[1]", equalTo("Continuous Delivery"));
     }
 
     @Test
@@ -52,8 +53,6 @@ public class BooksRestAssuredIT {
                 .body("id", is(1))
                 .body("name", equalTo("Clean Code"));
     }
-
-
 
 
 }
