@@ -21,6 +21,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 @AutoConfigureWebTestClient
 @Sql(scripts = "/sql-files/test-data.sql" ,executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 @Sql(scripts = "/sql-files/clear-test-data.sql" ,executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+//todo : pass parameter to TestRestTemplate
 public class BooksWebTestClientIT {
 
     //Not: Testlerin çalışması için "spring-boot-starter-webflux" gerekli !!!

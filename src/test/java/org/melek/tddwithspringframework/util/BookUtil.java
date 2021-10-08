@@ -1,5 +1,6 @@
 package org.melek.tddwithspringframework.util;
 
+import lombok.Getter;
 import org.melek.tddwithspringframework.dto.BookDto;
 import org.melek.tddwithspringframework.model.entity.Book;
 
@@ -7,9 +8,23 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+@Getter
 public class BookUtil {
 
-    public static List<Book> getSampleBookList() {
+    private  List<Book> sampleBookList;
+    private  List<BookDto> sampleBookDtoList;
+    private  Book sampleBook;
+    private  BookDto sampleBookDto;
+
+
+    public BookUtil() {
+        createSampleBookDtoList();
+        createSampleBookList();
+        createSampleBookDto();
+        createSampleBook();
+    }
+
+    private void createSampleBookList() {
         Book book1 = Book.builder()
                 .id(1L)
                 .name("Clean Code")
@@ -28,10 +43,10 @@ public class BookUtil {
                 .author("David Farley")
                 .price(15.5)
                 .stock(10).build();
-        return new ArrayList<>(Arrays.asList(book1, book2, book3));
+        sampleBookList = new ArrayList<>(Arrays.asList(book1, book2, book3));
     }
 
-    public static List<BookDto> getSampleBookDtoList() {
+    private void createSampleBookDtoList() {
         BookDto book1 = BookDto.builder()
                 .name("Clean Code")
                 .author("Robert Cecil")
@@ -47,11 +62,11 @@ public class BookUtil {
                 .author("David Farley")
                 .price(15.5)
                 .stock(10).build();
-        return new ArrayList<>(Arrays.asList(book1, book2, book3));
+        sampleBookDtoList = new ArrayList<>(Arrays.asList(book1, book2, book3));
     }
 
-    public static Book getSampleBook() {
-        return Book.builder()
+    private void createSampleBook() {
+        sampleBook = Book.builder()
                 .id(1L)
                 .name("Clean Code")
                 .author("Robert Cecil")
@@ -59,8 +74,8 @@ public class BookUtil {
                 .stock(10).build();
     }
 
-    public static BookDto getSampleBookDto() {
-        return BookDto.builder()
+    private void createSampleBookDto() {
+        sampleBookDto = BookDto.builder()
                 .name("Clean Code")
                 .author("Robert Cecil")
                 .price(10.0)

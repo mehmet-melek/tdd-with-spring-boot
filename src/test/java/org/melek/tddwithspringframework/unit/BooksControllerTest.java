@@ -33,6 +33,8 @@ class BooksControllerTest {
     @MockBean
     private BookService bookService;
 
+    BookUtil bookUtil = new BookUtil();
+
 /*
     @TestConfiguration
     static class AdditionalConfig {
@@ -50,7 +52,7 @@ class BooksControllerTest {
     @Test
     void whenGet_books_shouldReturnAllBooks() throws Exception {
         //Arrange
-        when(bookService.getAllBooks()).thenReturn(BookUtil.getSampleBookDtoList());
+        when(bookService.getAllBooks()).thenReturn(bookUtil.getSampleBookDtoList());
 
         //Act
         //Assert
@@ -66,7 +68,7 @@ class BooksControllerTest {
     @Test
     void whenGet_booksWithId_shouldReturnGivenBook() throws Exception {
         //Arrange
-        when(bookService.getBookWithId(anyLong())).thenReturn(BookUtil.getSampleBookDto());
+        when(bookService.getBookWithId(anyLong())).thenReturn(bookUtil.getSampleBookDto());
         //Act
         //Assert
         mockMvc.perform(MockMvcRequestBuilders.get("/books/id").param("id","1"))
@@ -78,7 +80,7 @@ class BooksControllerTest {
     @Test
     void whenGet_booksWithName_shouldReturnGivenBook() throws Exception {
         //Arrange
-        when(bookService.getBookWithName(any())).thenReturn(BookUtil.getSampleBookDto());
+        when(bookService.getBookWithName(any())).thenReturn(bookUtil.getSampleBookDto());
         //Act
         //Assert
         mockMvc.perform(MockMvcRequestBuilders.get("/books/name").param("bookName","Clean Code"))
@@ -106,8 +108,8 @@ class BooksControllerTest {
     void whenPostBookTo_books_shouldReturnSavedBookWithId() throws Exception {
         //Arrange
         ObjectMapper objectMapper = new ObjectMapper();
-        String json = objectMapper.writeValueAsString(BookUtil.getSampleBook());
-        when(bookService.addBook(any())).thenReturn(BookUtil.getSampleBookDto());
+        String json = objectMapper.writeValueAsString(bookUtil.getSampleBook());
+        when(bookService.addBook(any())).thenReturn(bookUtil.getSampleBookDto());
         //Act
         //Assert
         mockMvc.perform(post("/books")
@@ -115,7 +117,7 @@ class BooksControllerTest {
                 .content(json)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("name").value(BookUtil.getSampleBook().getName()));
+                .andExpect(jsonPath("name").value(bookUtil.getSampleBook().getName()));
         verify(bookService, times(1)).addBook(any());
     }
 

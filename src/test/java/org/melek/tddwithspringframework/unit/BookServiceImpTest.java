@@ -31,36 +31,40 @@ public class BookServiceImpTest {
     @Spy
     private BookMapper bookMapper = Mappers.getMapper(BookMapper.class);
 
+    BookUtil bookUtil = new BookUtil();
+
+
 
     @Test
     void getAllBooks() {
         //Arrange
-        when(bookRepository.findAll()).thenReturn(BookUtil.getSampleBookList());
+        when(bookRepository.findAll()).thenReturn(bookUtil.getSampleBookList());
         //when(bookMapper.booListToBookDtoList(BookUtil.getSampleBookList())).thenReturn(BookUtil.getSampleBookDtoList());
         //Act
         List<BookDto> bookDtoList = bookServiceImp.getAllBooks();
         //Assert
         assertThat(bookDtoList.size()).isGreaterThan(1);
         verify(bookRepository, times(1)).findAll();
-        verify(bookMapper,times(1)).booListToBookDtoList(ArgumentMatchers.refEq(BookUtil.getSampleBookList()));
+        verify(bookMapper,times(1)).bookListToBookDtoList(ArgumentMatchers.refEq(bookUtil.getSampleBookList()));
 
     }
 
     @Test
     void getBookWithName() {
         //Arrange
-        when(bookRepository.findByName(any())).thenReturn(java.util.Optional.ofNullable(BookUtil.getSampleBook()));
+        when(bookRepository.findByName(any())).thenReturn(java.util.Optional.of(bookUtil.getSampleBook()));
         //Act
         BookDto bookDto = bookServiceImp.getBookWithName("Clean Code");
         //Assert
         assertThat(bookDto.getName()).isEqualTo("Clean Code");
         verify(bookRepository, times(1)).findByName(any());
+        verify(bookMapper,times(1)).bookToBookDto(bookUtil.getSampleBook());
     }
 
     @Test
     void getBookWithId() {
         //Arrange
-        when(bookRepository.findById(any())).thenReturn(java.util.Optional.ofNullable(BookUtil.getSampleBook()));
+        when(bookRepository.findById(any())).thenReturn(java.util.Optional.ofNullable(bookUtil.getSampleBook()));
         //Act
         BookDto bookDto = bookServiceImp.getBookWithId(1L);
         //Assert

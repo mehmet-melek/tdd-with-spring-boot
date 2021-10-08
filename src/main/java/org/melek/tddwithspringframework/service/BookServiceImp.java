@@ -21,7 +21,7 @@ public class BookServiceImp implements BookService {
 
 
     public List<BookDto> getAllBooks() {
-        return bookMapper.booListToBookDtoList(bookRepository.findAll());
+        return bookMapper.bookListToBookDtoList(bookRepository.findAll());
                 /*bookRepository.findAll().stream()
                 .map(bookMapper::bookToBookDto).collect(Collectors.toList());*/
     }

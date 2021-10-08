@@ -2,6 +2,7 @@ package org.melek.tddwithspringframework.unit;
 
 
 import org.junit.jupiter.api.Test;
+import org.mapstruct.factory.Mappers;
 import org.melek.tddwithspringframework.dto.BookDto;
 import org.melek.tddwithspringframework.dto.BookMapper;
 import org.melek.tddwithspringframework.service.BookServiceImp;
@@ -15,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class BookServiceImpTestWithStub {
 
-    private final BookMapper bookMapper = Mockito.spy(BookMapper.class);
+    private final BookMapper bookMapper = Mockito.spy(Mappers.getMapper(BookMapper.class));
     private final  BookServiceImp bookServiceImp = new BookServiceImp(new StubBookRepository(),bookMapper);
 
     @Test

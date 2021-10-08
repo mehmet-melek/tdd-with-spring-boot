@@ -12,9 +12,11 @@ import java.util.Optional;
 
 public class StubBookRepository implements BookRepository {
 
+    BookUtil bookUtil = new BookUtil();
+
     @Override
     public List<Book> findAll() {
-        return BookUtil.getSampleBookList();
+        return bookUtil.getSampleBookList();
     }
 
     @Override
@@ -69,7 +71,7 @@ public class StubBookRepository implements BookRepository {
 
     @Override
     public Optional<Book> findById(Long aLong) {
-        return Optional.of(BookUtil.getSampleBook());
+        return Optional.of(bookUtil.getSampleBook());
     }
 
     @Override

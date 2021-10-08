@@ -10,6 +10,6 @@ import java.util.List;
 public interface BookMapper {
     BookMapper INSTANCE = Mappers.getMapper(BookMapper.class);
     BookDto bookToBookDto(Book book);
-    List<BookDto> booListToBookDtoList(List<Book> bookList);
+    List<BookDto> bookListToBookDtoList(List<Book> bookList);
     Book bookDtoToBook(BookDto bookDto);
 }
