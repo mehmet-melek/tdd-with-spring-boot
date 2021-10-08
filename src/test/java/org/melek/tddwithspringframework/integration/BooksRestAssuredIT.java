@@ -22,6 +22,8 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS) //used for non-static before method
 @ActiveProfiles(resolver = MyTestProfileResolver.class) //required application-test.properties file
+@Sql(scripts = "/sql-files/test-data.sql" ,executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql(scripts = "/sql-files/clear-test-data.sql" ,executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 public class BooksRestAssuredIT {
     private final static String BASE_URI = "http://localhost";
 
@@ -31,7 +33,6 @@ public class BooksRestAssuredIT {
     private Response response;
 
     @BeforeAll
-    @Sql("/sql-files/test-data.sql")
     void configureRestAssured() {
         RestAssured.baseURI = BASE_URI;
         RestAssured.port = port;
@@ -39,7 +40,6 @@ public class BooksRestAssuredIT {
 
     @Test
     void whenGetBooks_shouldReturnAllBooks() throws InterruptedException {
-        Thread.sleep(500000);
         response = when().get("/books");
         response.then().assertThat()
                 .statusCode(equalTo(200))
@@ -53,16 +53,14 @@ public class BooksRestAssuredIT {
         response =given().params("bookName","Clean Code").when().get("/books/name");
         response.then().assertThat()
                 .statusCode(equalTo(200))
-                .body("id", is(1))
                 .body("name", equalTo("Clean Code"));
     }
 
     @Test
     void whenGet_booksWithName_shouldReturnGivenBooks() throws Exception {
-        response =given().params("bookName","Clean Code").when().get("/books/name");
+        response =given().params("id",1).when().get("/books/id");
         response.then().assertThat()
                 .statusCode(equalTo(200))
-                .body("id", is(1))
                 .body("name", equalTo("Clean Code"));
     }
 

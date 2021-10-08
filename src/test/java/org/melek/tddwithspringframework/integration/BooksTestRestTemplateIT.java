@@ -2,6 +2,7 @@ package org.melek.tddwithspringframework.integration;
 
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.melek.tddwithspringframework.dto.BookDto;
 import org.melek.tddwithspringframework.model.entity.Book;
 import org.melek.tddwithspringframework.repository.BookRepository;
 import org.melek.tddwithspringframework.util.BookUtil;
@@ -21,43 +22,33 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = RANDOM_PORT)
-//@TestInstance(TestInstance.Lifecycle.PER_CLASS) //used for non-static before method
 @ActiveProfiles(resolver = MyTestProfileResolver.class) //required application-test.properties file
-//@Sql("/data.sql") //data.sql and schema.sql automatically execute before tests
+@Sql(scripts = "/sql-files/test-data.sql" ,executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql(scripts = "/sql-files/clear-test-data.sql" ,executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 class BooksTestRestTemplateIT {
 
-    @Autowired
-    private BookRepository bookRepository;
-
-/*
-    @BeforeAll
-    void setup() {
-        bookRepository.saveAll(BookUtil.getSampleBookList());
-    }
-*/
     @Autowired
     TestRestTemplate testRestTemplate;
 
     @Nested
     @DisplayName("Get operations")
-    @Sql("/sql-files/test-data.sql")
     class get {
 
         @Test
         void whenGetBooks_shouldReturnAllBooks() {
             //Arrange
             //Act
-            ResponseEntity<List<Book>> responseEntity = testRestTemplate.exchange(
+            ResponseEntity<List<BookDto>> responseEntity = testRestTemplate.exchange(
                     "/books",
                     HttpMethod.GET,
                     null,
-                    new ParameterizedTypeReference<List<Book>>() {
+                    new ParameterizedTypeReference<List<BookDto>>() {
                     });
-            List<Book> books = responseEntity.getBody();
+            List<BookDto> books = responseEntity.getBody();
             System.out.println(responseEntity.getBody());
             //Assert
             assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-            assertThat(books.size()).isEqualTo(3);
+            assertThat(books.size()).isEqualTo(2);
         }
 
 
@@ -65,10 +56,9 @@ class BooksTestRestTemplateIT {
         void whenGetBookWithId_shouldReturnGivenBook() throws InterruptedException {
             //Arrange
             //Act
-            ResponseEntity<Book> responseEntity = testRestTemplate.getForEntity("/books/1", Book.class);
+            ResponseEntity<BookDto> responseEntity = testRestTemplate.getForEntity("/books/1", BookDto.class);
             //Assert
             assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-            assertThat(responseEntity.getBody().getId()).isEqualTo(1);
         }
 
         @Test
@@ -89,10 +79,9 @@ class BooksTestRestTemplateIT {
         void whenSaveBook_shouldReturnSavedBook() {
             //Arrange
             //Act
-            ResponseEntity<Book> responseEntity = testRestTemplate.postForEntity("/books", BookUtil.getSampleBook(), Book.class);
+            ResponseEntity<BookDto> responseEntity = testRestTemplate.postForEntity("/books", BookUtil.getSampleBookDto(), BookDto.class);
             //Assert
             assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-            assertThat(responseEntity.getBody().getId()).isEqualTo(1);
             assertThat(responseEntity.getBody().getName()).isEqualTo(BookUtil.getSampleBook().getName());
         }
     }
