@@ -56,13 +56,4 @@ public class BooksRestAssuredIT {
                 .body("name", equalTo("Clean Code"));
     }
 
-    @Test
-    void whenGet_booksWithName_shouldReturnGivenBooks() throws Exception {
-        response =given().params("id",1).when().get("/books/id");
-        response.then().assertThat()
-                .statusCode(equalTo(200))
-                .body("name", equalTo("Clean Code"));
-    }
-
-
 }
