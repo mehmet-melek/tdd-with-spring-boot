@@ -2,7 +2,7 @@ package org.melek.tddwithspringframework.integration;
 
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.melek.tddwithspringframework.model.Book;
+import org.melek.tddwithspringframework.model.entity.Book;
 import org.melek.tddwithspringframework.repository.BookRepository;
 import org.melek.tddwithspringframework.util.BookUtil;
 import org.melek.tddwithspringframework.util.MyTestProfileResolver;
@@ -17,7 +17,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.DEFINED_PORT;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 @ExtendWith(SpringExtension.class)
@@ -41,7 +40,7 @@ class BooksTestRestTemplateIT {
 
     @Nested
     @DisplayName("Get operations")
-    @Sql("/sql-files/temp.sql")
+    @Sql("/sql-files/test-data.sql")
     class get {
 
         @Test

@@ -5,15 +5,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.melek.tddwithspringframework.controller.BooksController;
 import org.melek.tddwithspringframework.exception.BookNotFoundException;
-import org.melek.tddwithspringframework.repository.BookRepository;
 import org.melek.tddwithspringframework.service.BookService;
-import org.melek.tddwithspringframework.service.BookServiceImp;
 import org.melek.tddwithspringframework.util.BookUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -26,7 +22,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
-@WebMvcTest(BooksController.class)
+@WebMvcTest(controllers = BooksController.class,useDefaultFilters = true)
+//@AutoConfigureWebMvc // this annotation create a bean of controller advice then add in app context
+//@ContextConfiguration(classes = {BooksController.class, GlobalExceptionHandler.class})
 class BooksControllerTest {
 
     @Autowired
@@ -35,20 +33,24 @@ class BooksControllerTest {
     @MockBean
     private BookService bookService;
 
-/*    @TestConfiguration
+/*
+    @TestConfiguration
     static class AdditionalConfig {
-        BookRepository bookRepository;
+        GlobalExceptionHandler GlobalExceptionHandler;
         @Bean
-        public BookService productValidator() {
-            return new BookServiceImp(bookRepository) {
+        public GlobalExceptionHandler productValidator() {
+            return new GlobalExceptionHandler() {
             };
         }
-    }   */
+    }
+*/
+
+
 
     @Test
     void whenGet_books_shouldReturnAllBooks() throws Exception {
         //Arrange
-        when(bookService.getAllBooks()).thenReturn(BookUtil.getSampleBookList());
+        when(bookService.getAllBooks()).thenReturn(BookUtil.getSampleBookDtoList());
 
         //Act
         //Assert
@@ -64,28 +66,39 @@ class BooksControllerTest {
     @Test
     void whenGet_booksWithId_shouldReturnGivenBook() throws Exception {
         //Arrange
-        when(bookService.getBookWithId(anyLong())).thenReturn(BookUtil.getSampleBook());
+        when(bookService.getBookWithId(anyLong())).thenReturn(BookUtil.getSampleBookDto());
         //Act
         //Assert
-        mockMvc.perform(MockMvcRequestBuilders.get("/books/{bookId}", 1L))
+        mockMvc.perform(MockMvcRequestBuilders.get("/books/id").param("id","1"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("id").value(1L))
                 .andExpect(jsonPath("name").value("Clean Code"));
         verify(bookService, times(1)).getBookWithId(1L);
     }
 
     @Test
-    void whenGet_BooksWithNonExistId_shouldReturnNotFoundMessage() throws Exception {
+    void whenGet_booksWithName_shouldReturnGivenBook() throws Exception {
         //Arrange
-        when(bookService.getBookWithId(anyLong())).thenThrow(new BookNotFoundException());
+        when(bookService.getBookWithName(any())).thenReturn(BookUtil.getSampleBookDto());
         //Act
         //Assert
-        mockMvc.perform(MockMvcRequestBuilders.get("/books/{bookId}", 1))
+        mockMvc.perform(MockMvcRequestBuilders.get("/books/name").param("bookName","Clean Code"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("name").value("Clean Code"));
+        verify(bookService, times(1)).getBookWithName("Clean Code");
+    }
+
+    @Test
+    void whenGet_BooksWithNonExistName_shouldReturnNotFoundMessage() throws Exception {
+        //Arrange
+        when(bookService.getBookWithName(any())).thenThrow(new BookNotFoundException());
+        //Act
+        //Assert
+        mockMvc.perform(MockMvcRequestBuilders.get("/books/name").param("bookName","Clean Code"))
                 .andExpect(status().isNotFound())
                 .andExpect(result -> result.getResponse().toString().contains("Book not found!"));
         // .andExpect(status().reason(containsString("Book not found!")))
         // .andExpect( status().reason( "Book not found!" ));
-        verify(bookService, times(1)).getBookWithId(1L);
+        verify(bookService, times(1)).getBookWithName("Clean Code");
 
     }
 
@@ -94,7 +107,7 @@ class BooksControllerTest {
         //Arrange
         ObjectMapper objectMapper = new ObjectMapper();
         String json = objectMapper.writeValueAsString(BookUtil.getSampleBook());
-        when(bookService.addBook(any())).thenReturn(BookUtil.getSampleBook());
+        when(bookService.addBook(any())).thenReturn(BookUtil.getSampleBookDto());
         //Act
         //Assert
         mockMvc.perform(post("/books")
@@ -102,8 +115,9 @@ class BooksControllerTest {
                 .content(json)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("id").value(1))
                 .andExpect(jsonPath("name").value(BookUtil.getSampleBook().getName()));
         verify(bookService, times(1)).addBook(any());
     }
+
+
 }

@@ -1,7 +1,6 @@
 package org.melek.tddwithspringframework.controller;
 
 import org.melek.tddwithspringframework.dto.BookDto;
-import org.melek.tddwithspringframework.dto.CreateBookRequest;
 import org.melek.tddwithspringframework.service.BookService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,16 +25,22 @@ public class BooksController {
         return bookService.getAllBooks();
     }
 
-    @GetMapping("/name/{bookName}")
-    public ResponseEntity<BookDto> getBookWithId(@PathVariable String bookName) {
+    @GetMapping("/name")
+    public ResponseEntity<BookDto> getBookWithName(@RequestParam(name = "bookName") String bookName) {
         return new ResponseEntity<>(bookService.getBookWithName(bookName),HttpStatus.OK);
     }
+
+    @GetMapping("/id")
+    public ResponseEntity<BookDto> getBookWithId(@RequestParam(name = "id") Long id) {
+        return new ResponseEntity<>(bookService.getBookWithId(id),HttpStatus.OK);
+    }
+
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public BookDto saveGivenBook(@RequestBody CreateBookRequest createBookRequest) {
-        return bookService.addBook(createBookRequest);
+    public BookDto saveGivenBook(@RequestBody BookDto bookDto) {
+        return bookService.addBook(bookDto);
     }
 
 }

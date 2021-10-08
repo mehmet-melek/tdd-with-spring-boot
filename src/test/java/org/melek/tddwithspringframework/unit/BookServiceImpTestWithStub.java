@@ -2,33 +2,38 @@ package org.melek.tddwithspringframework.unit;
 
 
 import org.junit.jupiter.api.Test;
-import org.melek.tddwithspringframework.model.Book;
+import org.melek.tddwithspringframework.dto.BookDto;
+import org.melek.tddwithspringframework.dto.BookMapper;
 import org.melek.tddwithspringframework.service.BookServiceImp;
 import org.melek.tddwithspringframework.util.StubBookRepository;
+import org.mockito.Mockito;
+
+
 import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
 public class BookServiceImpTestWithStub {
 
-    private final  BookServiceImp bookServiceImp = new BookServiceImp(new StubBookRepository());
+    private final BookMapper bookMapper = Mockito.spy(BookMapper.class);
+    private final  BookServiceImp bookServiceImp = new BookServiceImp(new StubBookRepository(),bookMapper);
 
     @Test
     void getAllBooks() {
         //Arrange
         //Act
-        List<Book> bookList = bookServiceImp.getAllBooks();
+        List<BookDto> bookDtoList = bookServiceImp.getAllBooks();
         //Assert
-        assertThat(bookList.size()).isGreaterThan(1);
+        assertThat(bookDtoList.size()).isGreaterThan(1);
     }
 
     @Test
     void getBookWithId() {
         //Arrange
         //Act
-        Book book = bookServiceImp.getBookWithId(1L);
+        BookDto bookDto = bookServiceImp.getBookWithId(1L);
         //Assert
-        assertThat(book.getId()).isEqualTo(1L);
+        assertThat(bookDto.getName()).isEqualTo("Clean Code");
     }
 
 }

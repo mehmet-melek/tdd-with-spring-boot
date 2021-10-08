@@ -1,12 +1,11 @@
 package org.melek.tddwithspringframework.util;
 
-import org.melek.tddwithspringframework.model.Book;
+import org.melek.tddwithspringframework.model.entity.Book;
 import org.melek.tddwithspringframework.repository.BookRepository;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -131,5 +130,10 @@ public class StubBookRepository implements BookRepository {
     @Override
     public <S extends Book> boolean exists(Example<S> example) {
         return false;
+    }
+
+    @Override
+    public Optional<Book> findByName(String name) {
+        return Optional.empty();
     }
 }

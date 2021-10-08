@@ -2,14 +2,11 @@ package org.melek.tddwithspringframework.service;
 
 import org.melek.tddwithspringframework.dto.BookDto;
 import org.melek.tddwithspringframework.dto.BookMapper;
-import org.melek.tddwithspringframework.dto.CreateBookRequest;
 import org.melek.tddwithspringframework.exception.BookNotFoundException;
-import org.melek.tddwithspringframework.model.Book;
+import org.melek.tddwithspringframework.model.entity.Book;
 import org.melek.tddwithspringframework.repository.BookRepository;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class BookServiceImp implements BookService {
@@ -22,28 +19,26 @@ public class BookServiceImp implements BookService {
         this.bookMapper = bookMapper;
     }
 
+
     public List<BookDto> getAllBooks() {
-        return bookRepository.findAll().stream()
-                .map(bookMapper::bookToBookDto).collect(Collectors.toList());
+        return bookMapper.booListToBookDtoList(bookRepository.findAll());
+                /*bookRepository.findAll().stream()
+                .map(bookMapper::bookToBookDto).collect(Collectors.toList());*/
     }
 
     public BookDto getBookWithId(Long bookId) {
-
         return bookMapper.bookToBookDto(bookRepository.findById(bookId)
                 .orElseThrow(BookNotFoundException::new));
     }
 
     @Override
     public BookDto getBookWithName(String bookName) {
-        return null;
+        return bookMapper.bookToBookDto(bookRepository.findByName(bookName)
+                .orElseThrow(BookNotFoundException::new));
     }
 
-    public BookDto addBook(CreateBookRequest createBookRequest) {
-        Book newBook = Book.builder()
-                .name(createBookRequest.getName())
-                .author(createBookRequest.getAuthor())
-                .price(createBookRequest.getPrice())
-                .stock(createBookRequest.getStock()).build();
+    public BookDto addBook(BookDto bookDto) {
+        Book newBook = bookMapper.bookDtoToBook(bookDto);
         return bookMapper.bookToBookDto(bookRepository.save(newBook));
     }
 

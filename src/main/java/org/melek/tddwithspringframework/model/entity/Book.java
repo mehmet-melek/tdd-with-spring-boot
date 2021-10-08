@@ -1,4 +1,4 @@
-package org.melek.tddwithspringframework.model;
+package org.melek.tddwithspringframework.model.entity;
 
 import lombok.*;
 
@@ -15,7 +15,7 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
+   // @Column(nullable = false,unique = true)
     private String name;
 
     private String author;

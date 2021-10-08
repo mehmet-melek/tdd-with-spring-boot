@@ -1,11 +1,11 @@
 package org.melek.tddwithspringframework.unit;
 
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mapstruct.factory.Mappers;
+import org.melek.tddwithspringframework.dto.BookDto;
 import org.melek.tddwithspringframework.dto.BookMapper;
 import org.melek.tddwithspringframework.exception.BookNotFoundException;
-import org.melek.tddwithspringframework.model.Book;
 import org.melek.tddwithspringframework.repository.BookRepository;
 import org.melek.tddwithspringframework.service.BookServiceImp;
 import org.melek.tddwithspringframework.util.BookUtil;
@@ -22,26 +22,39 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 public class BookServiceImpTest {
 
-    @InjectMocks
+   @InjectMocks
     private BookServiceImp bookServiceImp;
 
     @Mock
     private BookRepository bookRepository;
 
-    @Mock
-    BookMapper bookMapper;
+    @Spy
+    private BookMapper bookMapper = Mappers.getMapper(BookMapper.class);
 
 
     @Test
     void getAllBooks() {
         //Arrange
         when(bookRepository.findAll()).thenReturn(BookUtil.getSampleBookList());
+        //when(bookMapper.booListToBookDtoList(BookUtil.getSampleBookList())).thenReturn(BookUtil.getSampleBookDtoList());
         //Act
-        List<Book> bookList = bookServiceImp.getAllBooks();
+        List<BookDto> bookDtoList = bookServiceImp.getAllBooks();
         //Assert
-        assertThat(bookList.size()).isGreaterThan(1);
+        assertThat(bookDtoList.size()).isGreaterThan(1);
         verify(bookRepository, times(1)).findAll();
+        verify(bookMapper,times(1)).booListToBookDtoList(ArgumentMatchers.refEq(BookUtil.getSampleBookList()));
 
+    }
+
+    @Test
+    void getBookWithName() {
+        //Arrange
+        when(bookRepository.findByName(any())).thenReturn(java.util.Optional.ofNullable(BookUtil.getSampleBook()));
+        //Act
+        BookDto bookDto = bookServiceImp.getBookWithName("Clean Code");
+        //Assert
+        assertThat(bookDto.getName()).isEqualTo("Clean Code");
+        verify(bookRepository, times(1)).findByName(any());
     }
 
     @Test
@@ -49,9 +62,9 @@ public class BookServiceImpTest {
         //Arrange
         when(bookRepository.findById(any())).thenReturn(java.util.Optional.ofNullable(BookUtil.getSampleBook()));
         //Act
-        Book book = bookServiceImp.getBookWithId(1L);
+        BookDto bookDto = bookServiceImp.getBookWithId(1L);
         //Assert
-        assertThat(book.getId()).isEqualTo(1L);
+        assertThat(bookDto.getName()).isEqualTo("Clean Code");
         verify(bookRepository, times(1)).findById(any());
     }
 

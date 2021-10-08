@@ -6,13 +6,14 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.rules.ExpectedException;
 import org.melek.tddwithspringframework.util.MyTestProfileResolver;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.when;
 import static org.hamcrest.Matchers.*;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
@@ -30,13 +31,15 @@ public class BooksRestAssuredIT {
     private Response response;
 
     @BeforeAll
+    @Sql("/sql-files/test-data.sql")
     void configureRestAssured() {
         RestAssured.baseURI = BASE_URI;
         RestAssured.port = port;
     }
 
     @Test
-    void whenGetBooks_shouldReturnAllBooks() {
+    void whenGetBooks_shouldReturnAllBooks() throws InterruptedException {
+        Thread.sleep(500000);
         response = when().get("/books");
         response.then().assertThat()
                 .statusCode(equalTo(200))
@@ -46,8 +49,17 @@ public class BooksRestAssuredIT {
     }
 
     @Test
-    void whenGet_booksWithId_shouldReturnGivenBook() throws Exception {
-        response = when().get("/books/1");
+    void whenGet_booksWithName_shouldReturnGivenBook() throws Exception {
+        response =given().params("bookName","Clean Code").when().get("/books/name");
+        response.then().assertThat()
+                .statusCode(equalTo(200))
+                .body("id", is(1))
+                .body("name", equalTo("Clean Code"));
+    }
+
+    @Test
+    void whenGet_booksWithName_shouldReturnGivenBooks() throws Exception {
+        response =given().params("bookName","Clean Code").when().get("/books/name");
         response.then().assertThat()
                 .statusCode(equalTo(200))
                 .body("id", is(1))
