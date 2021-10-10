@@ -1,5 +1,6 @@
 package org.melek.tddwithspringframework.unit;
 
+import org.assertj.core.api.BDDAssertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mapstruct.factory.Mappers;
@@ -14,7 +15,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -43,7 +43,7 @@ public class BookServiceImpTest {
         //Act
         List<BookDto> bookDtoList = bookServiceImp.getAllBooks();
         //Assert
-        assertThat(bookDtoList.size()).isGreaterThan(1);
+        BDDAssertions.then(bookDtoList.size()).isGreaterThanOrEqualTo(2);
         verify(bookRepository, times(1)).findAll();
         verify(bookMapper,times(1)).bookListToBookDtoList(ArgumentMatchers.refEq(bookUtil.getSampleBookList()));
 
@@ -56,7 +56,7 @@ public class BookServiceImpTest {
         //Act
         BookDto bookDto = bookServiceImp.getBookWithName("Clean Code");
         //Assert
-        assertThat(bookDto.getName()).isEqualTo("Clean Code");
+        BDDAssertions.then(bookDto.getName()).isEqualTo("Clean Code");
         verify(bookRepository, times(1)).findByName(any());
         verify(bookMapper,times(1)).bookToBookDto(bookUtil.getSampleBook());
     }
@@ -68,7 +68,7 @@ public class BookServiceImpTest {
         //Act
         BookDto bookDto = bookServiceImp.getBookWithId(1L);
         //Assert
-        assertThat(bookDto.getName()).isEqualTo("Clean Code");
+        BDDAssertions.then(bookDto.getName()).containsIgnoringCase("clean");
         verify(bookRepository, times(1)).findById(any());
     }
 
@@ -88,10 +88,7 @@ public class BookServiceImpTest {
          BookServiceImp spyBookServiceImp = Mockito.spy(bookServiceImp);
          Mockito.doReturn(0).when(spyBookServiceImp).calculate(10);
 
-        int actualResult = spyBookServiceImp.getResult(10);
-        assertThat(actualResult).isEqualTo(0);
-
         int actualResultSecond = spyBookServiceImp.getResult(11);
-        assertThat(actualResultSecond).isEqualTo(11*2);
+        BDDAssertions.then(actualResultSecond).isEqualTo(22);
     }
 }

@@ -1,5 +1,6 @@
 package org.melek.tddwithspringframework.unit;
 
+import org.assertj.core.api.BDDAssertions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
@@ -26,6 +27,7 @@ public class BookMapperTest {
         Assertions.assertEquals(resultBookDto.getName(), testBook.getName());
         Assertions.assertEquals(resultBookDto.getAuthor(), testBook.getAuthor());
         Assertions.assertEquals(resultBookDto.getStock(), testBook.getStock());
+        BDDAssertions.then(resultBookDto.getName()).isEqualTo(testBook.getName());
     }
 
     @Test
@@ -40,6 +42,7 @@ public class BookMapperTest {
         Assertions.assertEquals(testBookDto.getPrice(),resultBook.getPrice());
         Assertions.assertEquals(testBookDto.getStock(),resultBook.getStock());
         Assertions.assertEquals(null,resultBook.getId());
+        BDDAssertions.then(resultBook.getId()).isNull();
     }
 
 }
