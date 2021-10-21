@@ -16,7 +16,6 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
-@ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @ActiveProfiles(resolver = MyTestProfileResolver.class) //required application-test.properties file
 @Sql(scripts = "/sql-files/test-data.sql" ,executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
