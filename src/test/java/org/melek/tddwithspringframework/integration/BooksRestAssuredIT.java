@@ -24,7 +24,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 @ActiveProfiles(resolver = MyTestProfileResolver.class) //required application-test.properties file
 @Sql(scripts = "/sql-files/test-data.sql" ,executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 @Sql(scripts = "/sql-files/clear-test-data.sql" ,executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-public class BooksRestAssuredIT {
+class BooksRestAssuredIT {
     private final static String BASE_URI = "http://localhost";
 
     @LocalServerPort

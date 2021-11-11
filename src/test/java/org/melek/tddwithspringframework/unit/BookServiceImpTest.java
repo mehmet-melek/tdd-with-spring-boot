@@ -20,7 +20,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class BookServiceImpTest {
+class BookServiceImpTest {
 
    @InjectMocks
     private BookServiceImp bookServiceImp;
@@ -80,15 +80,5 @@ public class BookServiceImpTest {
         assertThrows(BookNotFoundException.class,() -> {
             bookServiceImp.getBookWithId(1L);
         });
-    }
-
-    //Todo: change with a real function
-    @Test
-    void sampleTestWithSpy() {
-         BookServiceImp spyBookServiceImp = Mockito.spy(bookServiceImp);
-         Mockito.doReturn(0).when(spyBookServiceImp).calculate(10);
-
-        int actualResultSecond = spyBookServiceImp.getResult(11);
-        BDDAssertions.then(actualResultSecond).isEqualTo(22);
     }
 }

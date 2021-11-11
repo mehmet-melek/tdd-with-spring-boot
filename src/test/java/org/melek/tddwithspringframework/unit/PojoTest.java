@@ -7,10 +7,10 @@ import pl.pojo.tester.api.assertion.Method;
 import static pl.pojo.tester.api.assertion.Assertions.assertPojoMethodsFor;
 
 
-public class PojoTest {
+class PojoTest {
 
     @Test
-    public void bookPojoTest(){
+    void bookPojoTest(){
         assertPojoMethodsFor(Book.class).testing(Method.GETTER,Method.CONSTRUCTOR)
                 .areWellImplemented();
     }

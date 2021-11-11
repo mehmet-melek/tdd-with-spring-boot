@@ -22,8 +22,6 @@ public class BookServiceImp implements BookService {
 
     public List<BookDto> getAllBooks() {
         return bookMapper.bookListToBookDtoList(bookRepository.findAll());
-                /*bookRepository.findAll().stream()
-                .map(bookMapper::bookToBookDto).collect(Collectors.toList());*/
     }
 
     public BookDto getBookWithId(Long bookId) {
@@ -42,12 +40,4 @@ public class BookServiceImp implements BookService {
         return bookMapper.bookToBookDto(bookRepository.save(newBook));
     }
 
-    //Todo: Delete or change with real method
-    public int getResult(Integer value) {
-        return calculate(value);
-    }
-
-    public int calculate(int value) {
-        return value * 2;
-    }
 }

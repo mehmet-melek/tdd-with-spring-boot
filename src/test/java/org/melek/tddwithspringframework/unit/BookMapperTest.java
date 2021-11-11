@@ -10,7 +10,7 @@ import org.melek.tddwithspringframework.model.entity.Book;
 import org.melek.tddwithspringframework.util.BookUtil;
 
 
-public class BookMapperTest {
+class BookMapperTest {
 
     private BookMapper bookMapper = Mappers.getMapper(BookMapper.class);
     private BookUtil bookUtil = new BookUtil();

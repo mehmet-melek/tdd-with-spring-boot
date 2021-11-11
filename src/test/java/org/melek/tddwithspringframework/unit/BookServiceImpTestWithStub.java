@@ -14,7 +14,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-public class BookServiceImpTestWithStub {
+class BookServiceImpWithStubTest {
 
     private final BookMapper bookMapper = Mockito.spy(Mappers.getMapper(BookMapper.class));
     private final  BookServiceImp bookServiceImp = new BookServiceImp(new StubBookRepository(),bookMapper);
