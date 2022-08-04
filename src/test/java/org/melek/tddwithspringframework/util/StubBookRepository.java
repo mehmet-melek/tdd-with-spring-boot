@@ -138,4 +138,10 @@ public class StubBookRepository implements BookRepository {
     public Optional<Book> findByName(String name) {
         return Optional.empty();
     }
+
+    @Override
+    public List<Book> findByNameStartsWithParam(String ending) {
+        return null;
+    }
+
 }
