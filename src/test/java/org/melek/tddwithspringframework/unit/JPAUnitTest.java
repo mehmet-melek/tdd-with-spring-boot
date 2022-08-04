@@ -18,16 +18,29 @@ import java.util.List;
 public class JPAUnitTest {
 
     @Autowired
-    private TestEntityManager entityManager;
-
+    private TestEntityManager testEntityManager;
 
     @Autowired
     BookRepository bookRepository;
 
+    //First data coming from data.sql file and second data created with testEntityManager.persist.
+    //So expected result is 2
     @Test
     void customQueryTest(){
+
+        //Arrange
+        Book book = Book.builder()
+                .name("Dummy book name Test")
+                .author("Dummy author")
+                .price(20)
+                .stock(3).build();
+        testEntityManager.persist(book);
+
+        //Act
         List<Book> bookList = bookRepository.findByNameStartsWithParam("Test");
-        BDDAssertions.then(bookList.size()).isEqualTo(3);
+
+        //Assert
+        BDDAssertions.then(bookList.size()).isEqualTo(2);
     }
 
 }
