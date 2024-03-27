@@ -35,12 +35,9 @@ public class BooksController {
         return new ResponseEntity<>(bookService.getBookWithId(id),HttpStatus.OK);
     }
 
-
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    @ResponseBody
-    public BookDto saveGivenBook(@RequestBody BookDto bookDto) {
-        return bookService.addBook(bookDto);
-    }
+ @PostMapping
+public ResponseEntity<BookDto> addBook(@RequestBody BookDto bookDto) {
+    return new ResponseEntity<>(bookService.addBook(bookDto), HttpStatus.CREATED);
+}
 
 }
